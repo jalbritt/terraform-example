@@ -1,0 +1,39 @@
+name: Terraform Apply
+
+on:
+  pull_request:
+    types:
+      - closed
+    branches:
+      - main
+
+jobs:
+  terraform:
+    runs-on: ubuntu-latest
+    if: github.event.pull_request.merged == true
+    env:
+      GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Install Terraform
+        uses: hashicorp/setup-terraform@v1
+        with:
+          terraform_version: 1.0.0
+
+      - name: Terraform Init
+        run: |
+          cd terraform       
+          terraform init -reconfigure
+
+      - name: Terraform Plan
+        id: plan
+        run: |
+          cd terraform
+          terraform plan
+
+      - name: Terraform Apply
+        run: |
+          cd terraform
+          terraform apply -auto-approve
