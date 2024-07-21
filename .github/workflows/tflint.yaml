@@ -1,0 +1,19 @@
+name: 'TFLint'
+
+on: [push]
+
+jobs:
+  tflint:
+    name: 'TFLint'
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Setup TFLint
+      uses: terraform-linters/setup-tflint@v3
+      with:
+        tflint_version: v0.44.1
+
+    - name: Run TFLint
+      run: tflint -f compact
