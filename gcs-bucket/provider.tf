@@ -2,4 +2,14 @@
 provider "google" {
   project     = "example-project"
   region      = "us-east4"
+  credentials = var.google_credentials
+}
+
+terraform {
+  required_providers {
+    google = {
+      source  = "hashicorp/google"
+      version = "~> 4.0"
+    }
+  }
 }
